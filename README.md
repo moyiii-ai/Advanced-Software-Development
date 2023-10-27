@@ -8,7 +8,7 @@
 
 Line：储存和编辑文件的基本单元，即一行。
 
-LineList：用链表来存储整个文件，通过python的装饰器实现Singleton模式，同时是Composite+Iterator模式。
+LineList：用链表来存储整个文件，通过python的装饰器实现Singleton模式，同时是Composite模式。
 
 Adapter：使用Adapter模式，将Command转化为LineList可以直接处理的形式，并递交LineList进行处理。
 
@@ -24,7 +24,7 @@ CommandQueue：使用Command模式，用队列来存储所有Command
 
 ## 3. 讨论
 
-
+Iterator模式 为什么不用 麻烦+遍历方式不太会改变
 
 ## 4. 小组分工
 

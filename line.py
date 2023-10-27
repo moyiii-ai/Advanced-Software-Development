@@ -1,5 +1,14 @@
+
 class Line(object):
-    pass
+    def __init__(self, text, deleted, next):
+        self.text = text
+        self.deleted = deleted
+        self.next = next
+
+class Caption(Line):
+    # TODO(B): print the caption
+    def show():
+        pass
 
 
 def Singleton(cls):
@@ -15,10 +24,11 @@ def Singleton(cls):
 class LineList(object):
     # A linked list to maintain the contents of documents.
 
-    def __init__(self, name):
-        self.head = name
+    def __init__(self):
+        # Avoid boundary errors by placing an empty node at the head
+        self.head = Line("", 0, None)
 
-    # TODO(B): load the file
+    # TODO(B): load the file, create a Line object for each line in file
     def load(self, file):
         self.file_name = file
         pass
@@ -27,11 +37,11 @@ class LineList(object):
     def save(self):
         pass
 
-    # TODO(A): find the Line before pos, implement it if you think it's helpful
+    # TODO(A): find the item before pos, implement it if you think it's helpful
     def find(self, pos):
         pass
 
-    # TODO(A): insert the text in pos
+    # TODO(A): insert the text before pos
     def insert(self, pos, text):
         pass
 
