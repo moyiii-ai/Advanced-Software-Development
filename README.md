@@ -6,7 +6,7 @@
 
 ## 1. 设计
 
-Line：储存和编辑文件的基本单元，即一行。
+Line：储存和编辑文件的基本单元，即一行。不同类型的Line有不同类型的打印格式，因此使用Strategy模式。
 
 LineList：用链表来存储整个文件，通过python的装饰器实现Singleton模式，同时是Composite模式。
 

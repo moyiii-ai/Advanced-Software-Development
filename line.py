@@ -6,8 +6,12 @@ class Line(object):
         self.next = next
 
 class Caption(Line):
-    # TODO(B): print the caption
-    def show():
+    # TODO(B)
+    def list(self):
+        pass
+    
+    # TODO(B)
+    def tree_list(self, level, has_brother):
         pass
 
 
@@ -27,24 +31,33 @@ class LineList(object):
     def __init__(self):
         # Avoid boundary errors by placing an empty node at the head
         self.head = Line("", 0, None)
+        self.count = 0
 
-    # TODO(B): load the file, create a Line object for each line in file
+    # TODO(B): Load the file, create a Line object for each line in file
     def load(self, file):
         self.file_name = file
         pass
 
-    # TODO(B): save the file
+    # TODO(B): Save the file
     def save(self):
         pass
 
-    # TODO(A): find the item before pos, implement it if you think it's helpful
+    # TODO(A): Find the item before pos, implement it if you think it's helpful
     def find(self, pos):
         pass
 
-    # TODO(A): insert the text before pos
+    # TODO(A): Insert the text before pos
     def insert(self, pos, text):
         pass
 
-    # TODO(A): delete the node in pos
+    # TODO(A): Delete the node in pos
     def delete(self, pos):
+        pass
+
+    # TODO(B)
+    def list(self):
+        pass
+
+    # TODO(B)
+    def tree_list(self):
         pass
