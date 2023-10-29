@@ -46,7 +46,7 @@
 
      LineList：用链表来存储文件中的所有Line，通过python的装饰器实现**Singleton模式**。
 
-     LineList中的tree_list和dir_list使用了**Composite模式**，以实现充分的代码复用。具体设计如下：
+     LineList中的tree_show和dir_show使用了**Composite模式**，以实现充分的代码复用。具体设计如下：
 
      * dir_show可以看作打印一个指定text对应的子树，因此在每个节点可以递归调用子节点。
      * 层次为0的节点是叶子节点，在建立Line实例时保证这一点。
@@ -66,8 +66,6 @@
 由于delete等指令的特殊要求，默认输入中不存在完全相同的文本。
 
 Iterator模式 为什么不用 麻烦+遍历方式不太会改变
-
-为什么Linelist的tree不用composite模式来打印：树结构变化太大，本质上还是按行而不是按子树修改
 
 
 
