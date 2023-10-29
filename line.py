@@ -1,17 +1,39 @@
-
 class Line(object):
-    def __init__(self, text, deleted, next):
+    def __init__(self, text, deleted, next, level):
         self.text = text
         self.deleted = deleted
         self.next = next
+        # level is only useful for caption, for text, set it as 0
+        self.level = level
+
 
 class Caption(Line):
-    # TODO(B)
-    def list(self):
+    # TODO(B): to reuse in save, return the output string
+    def show(self):
         pass
     
     # TODO(B)
-    def tree_list(self, level, has_brother):
+    def tree_show(self, tab, has_brother, rank):
+        pass
+
+
+class UnorderedList(Line):
+    # TODO(B)
+    def show(self):
+        pass
+
+    # TODO(B)
+    def tree_show(self, tab, has_brother, rank):
+        pass
+
+
+class OrderedList(Line):
+    # TODO(B)
+    def show(self):
+        pass
+
+    # TODO(B): rank is only useful for OrderedList
+    def tree_show(self, tab, has_brother, rank):
         pass
 
 
@@ -30,7 +52,7 @@ class LineList(object):
 
     def __init__(self):
         # Avoid boundary errors by placing an empty node at the head
-        self.head = Line("", 0, None)
+        self.head = Line("", 0, None, 0)
         self.count = 0
 
     # TODO(B): Load the file, create a Line object for each line in file
@@ -40,24 +62,39 @@ class LineList(object):
 
     # TODO(B): Save the file
     def save(self):
+        # Notice: Only save the lines without deleted tag!
         pass
 
-    # TODO(A): Find the item before pos, implement it if you think it's helpful
-    def find(self, pos):
-        pass
-
-    # TODO(A): Insert the text before pos
+    # TODO(A): Insert the text at pos
     def insert(self, pos, text):
+        # Notice: Don't forget to update self.count!
+        # judge the type of text and create different kinds of line
         pass
 
-    # TODO(A): Delete the node in pos
-    def delete(self, pos):
+    # TODO(A): Delete the node by text, just mark the deleted tag
+    def delete_text(self, text):
+        # Notice: Don't forget to update self.count!
+        pass
+
+    # TODO(A): Delete the node in pos and return the text
+    def delete_pos(self, pos):
+        # Notice: Don't forget to update self.count!
+        pass
+
+    # TODO(A): Remove the delete tag by text
+    def recover(self, text):
         pass
 
     # TODO(B)
-    def list(self):
+    def show(self):
         pass
 
     # TODO(B)
-    def tree_list(self):
+    def dir_show(self, text, level, has_brother):
         pass
+
+    # TODO(B): call dir_show for each root
+    def tree_show(self):
+        pass
+
+    
