@@ -1,7 +1,5 @@
 # 高级软件开发 小组Lab：简易Markdown编辑器
 
-未确认的问题：dir-tree的格式细节，当前工作目录的定义，undo redo的逻辑，
-
 ## 0. 运行方法
 
 
@@ -42,7 +40,7 @@
 
    * `line.py`
 
-     Line：储存和编辑文件的基本单元，即一行。使用**Strategy模式**，每个子类对应一种类型的文件内容，各自实现list和tree list。
+     Line：储存和编辑文件的基本单元，即一行。使用**Strategy模式**，每个子类对应一种类型的文件内容，各自实现show和dir_show。
 
      LineList：用链表来存储文件中的所有Line，通过python的装饰器实现**Singleton模式**。
 
