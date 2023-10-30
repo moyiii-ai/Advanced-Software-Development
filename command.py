@@ -99,19 +99,22 @@ class CommandQueue(object):
     def __init__(self):
         # As we need to undo and redo, use a list to implement queue
         self.tail = 0
+        self.end = 0
         self.queue = {}
 
     # TODO(A): Execute by calling command.excute(), push it in the end of queue
     def excute(self, command):
         # Notice: for the load/save command, clear the queue as they can't undo
+        # For any command, set end equals to tail, as now we can't redo
         pass
 
     # TODO(A): Undo the last command
     def undo(self):
         # Notice: skip the list/list-tree/dir-tree, but no load/save
+        # Move the tail forward, but don't change the end.
         pass
 
-    # TODO(A): Redo the last command, just call command.excute()
+    # TODO(A): Redo the last command, just call command.excute() again
     def redo(self):
-        # Notice: check if the last command is undo
+        # Notice: we can redo only if tail < end.
         pass

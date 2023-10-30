@@ -71,7 +71,10 @@ class Adapter(object):
             command = TreeShow()
 
         if (input[0] == "dir-tree"):
-            command = DirShow(input[1])
+            if (len(input) > 1):
+                command = DirShow(input[1])
+            else:
+                command = TreeShow()
         
         queue.excute(command)
 

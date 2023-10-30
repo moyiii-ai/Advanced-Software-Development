@@ -1,39 +1,47 @@
 class Line(object):
-    def __init__(self, text, deleted, next, level):
+    def __init__(self, text, next):
         self.text = text
-        self.deleted = deleted
         self.next = next
+        self.deleted = 0
         # level is only useful for caption, for text, set it as 0
-        self.level = level
+        self.level = 0
 
 
 class Caption(Line):
+    def __init__(self, text, next, level):
+        super(Caption, self).__init__(text, next)
+        self.level = level
+    
     # TODO(B): to reuse in save, return the output string
     def show(self):
         pass
     
     # TODO(B)
-    def tree_show(self, tab, has_brother, rank):
+    def tree_show(self, tab, has_brother):
         pass
 
 
 class UnorderedList(Line):
-    # TODO(B)
+    # TODO(B): to reuse in save, return the output string
     def show(self):
         pass
 
     # TODO(B)
-    def tree_show(self, tab, has_brother, rank):
+    def tree_show(self, tab, has_brother):
         pass
 
 
 class OrderedList(Line):
-    # TODO(B)
+    def __init__(self, text, next, rank):
+        super(OrderedList, self).__init__(text, next)
+        self.rank = rank
+
+    # TODO(B): to reuse in save, return the output string
     def show(self):
         pass
 
     # TODO(B): rank is only useful for OrderedList
-    def tree_show(self, tab, has_brother, rank):
+    def tree_show(self, tab, has_brother):
         pass
 
 
@@ -52,7 +60,7 @@ class LineList(object):
 
     def __init__(self):
         # Avoid boundary errors by placing an empty node at the head
-        self.head = Line("", 0, None, 0)
+        self.head = Line("", None)
         self.count = 0
 
     # TODO(B): Load the file, create a Line object for each line in file
@@ -85,15 +93,15 @@ class LineList(object):
     def recover(self, text):
         pass
 
-    # TODO(B)
+    # TODO(B): Just call show for each line
     def show(self):
         pass
 
-    # TODO(B)
+    # TODO(B): Recursively call dir_show for each subtree
     def dir_show(self, text, level, has_brother):
         pass
 
-    # TODO(B): call dir_show for each root
+    # TODO(B): Call dir_show for each top-level caption
     def tree_show(self):
         pass
 
