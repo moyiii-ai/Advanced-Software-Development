@@ -14,7 +14,8 @@
 
 2. 对于一条指令来说，workflow为：
 
-   **TODO**：图1 workflow图，包含所有模块
+   图1 workflow图，包含所有模块
+   ![](images/1.png)
 
 3. 代码结构如下：
 
@@ -36,7 +37,8 @@
 
      CommandQueue：用队列来存储所有Command，以便进行undo和redo。
 
-     **TODO**：图2：CommandQueue、Command和各Command子类，及其实现的函数
+     图2：CommandQueue、Command和各Command子类，及其实现的函数
+     ![](images/2.png)
 
    * `line.py`
 
@@ -51,7 +53,8 @@
      * 如何通过链表了解树结构：从当前line向后，若当前节点层次为x，则x+1层或0层的节点都为它的儿子，遇到第一个层次不小于x的节点则子树结束。
      * 整个文件可以看作由多个最高等级的标题构成的森林，因此tree_show的实现只需要对每个根节点调用dir_show。
 
-     **TODO**：图3：LineList、Line和各Line子类，及其实现的函数
+     图3：LineList、Line和各Line子类，及其实现的函数
+     ![](images/3.png)
 
 
 
