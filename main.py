@@ -14,7 +14,6 @@ def run():
         # Converts the original command into a format that can be executed directly
         def solve(input):
             history.push(input)
-            history.push(input)
             input = input.split(' ')
 
             if (input[0] == "history"):
