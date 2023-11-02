@@ -31,7 +31,7 @@ class Statistic(object):
         self.work_time = 0
         self.queue = {}
 
-    # TODO(B): Start a new session, clear the queue and load the stats file    
+    # TODO(B): Start a new session, clear the queue    
     def start_session(self):
         # Notice: Don't forget to write a session line into stats file!
         pass

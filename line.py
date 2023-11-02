@@ -22,6 +22,11 @@ class Caption(Line):
 
 
 class UnorderedList(Line):
+    # For UnorderedList, rank 1 means -, 2 means +, 3 means *
+    def __init__(self, text, next, rank):
+        super(OrderedList, self).__init__(text, next)
+        self.rank = rank
+    
     # TODO(B): to reuse in save, return the output string
     def show(self):
         pass
@@ -32,6 +37,7 @@ class UnorderedList(Line):
 
 
 class OrderedList(Line):
+    # For OrderedList, rank belike 1 2 3 4…
     def __init__(self, text, next, rank):
         super(OrderedList, self).__init__(text, next)
         self.rank = rank
@@ -40,7 +46,7 @@ class OrderedList(Line):
     def show(self):
         pass
 
-    # TODO(B): rank is only useful for OrderedList
+    # TODO(B)
     def tree_show(self, tab, has_brother):
         pass
 
