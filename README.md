@@ -27,7 +27,7 @@
 
      History：负责日志载入、更新和显示。
 
-     Statistic：负责统计数据载入、更新和显示。
+     Statistic：负责统计数据初始化、更新和显示。
 
      以上两个模块与Command和Line这两个核心模块完全分离，只被Adapter引用。
 
