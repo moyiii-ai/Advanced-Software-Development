@@ -67,29 +67,30 @@ class Statistic(object):
     def open_file(self, file_name):
         start_time = time.time()
         if self.queue:
-            last_file = list(self.queue.keys())[-1]
-            elapsed_time = time.time() - start_time
-            self.queue[last_file] += elapsed_time
+            last_file, last_start_time = list(self.queue.keys())[-1], self.queue[list(self.queue.keys())[-1]]
+            elapsed_time = start_time - last_start_time
+            self.queue[last_file] = elapsed_time
             self.work_time += elapsed_time
-            days, remainder = divmod(self.queue[last_file], 86400)
+            
+            days, remainder = divmod(int(elapsed_time), 86400)
             hours, remainder = divmod(remainder, 3600)
             minutes, seconds = divmod(remainder, 60)
             if days > 0:
-                self.stat_file.write(f"./{last_file} {days} 天 {hours} 小时 {minutes} 分钟")
+                self.stat_file.write(f"./{last_file} {days} 天 {hours} 小时 {minutes} 分钟\n")
             elif hours > 0:
-                self.stat_file.write(f"./{last_file} {hours} 小时 {minutes} 分钟")
+                self.stat_file.write(f"./{last_file} {hours} 小时 {minutes} 分钟\n")
             elif minutes > 0:
-                self.stat_file.write(f"./{last_file} {minutes} 分钟")
+                self.stat_file.write(f"./{last_file} {minutes} 分钟\n")
             else:
-                self.stat_file.write(f"./{last_file} {seconds} 秒") 
-        self.queue[file_name] = 0
+                self.stat_file.write(f"./{last_file} {seconds} 秒\n")
+        self.queue[file_name] = start_time
             
         #pass
     
     # TODO(B): Print all working time in the queue
     def show_all(self):
-        for file_name, file_time in self.queue.items():
-            days, remainder = divmod(file_time, 86400)
+        for file_name, elapsed_time in self.queue.items():
+            days, remainder = divmod(int(elapsed_time), 86400)
             hours, remainder = divmod(remainder, 3600)
             minutes, seconds = divmod(remainder, 60)
             if days > 0:
@@ -99,16 +100,15 @@ class Statistic(object):
             elif minutes > 0:
                 print(f"./{file_name} {minutes} 分钟")
             else:
-                print(f"./{file_name} {seconds} 秒")      
+                print(f"./{file_name} {seconds} 秒")   
         #pass
     
     # TODO(B): Print the current working time
     def show_current(self):
         if self.queue:
             file_name = list(self.queue.keys())[-1]
-            start_time = self.queue[file_name]
-            elapsed_time = time.time() - start_time
-            days, remainder = divmod(elapsed_time, 86400)
+            elapsed_time = self.queue[file_name]
+            days, remainder = divmod(int(elapsed_time), 86400)
             hours, remainder = divmod(remainder, 3600)
             minutes, seconds = divmod(remainder, 60)
             if days > 0:
