@@ -113,6 +113,7 @@ def run():
     while True:
         user_input = input("Please input your command:")
         if (user_input == "quit"):
+            stats.quit_session()
             break
         # Only if the user input "quit" will the program end #
         adapter.solve(user_input)
