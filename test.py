@@ -414,6 +414,31 @@ class TestCLI(unittest.TestCase):
             content = f.read()
         self.assertEqual(content, "- a\n- c")
     
+    # test undo
+    def test_undo_3(self):
+        command_list = [
+            "load test.md",
+            "insert * a",
+            "delete a",
+            "undo",
+            "insert * c",
+            "delete c",
+            "undo",
+            "undo",
+            "undo",
+            "save",
+            "quit",
+        ]
+        with open("inputs.txt", "w") as f: 
+            f.write("\n".join(command_list))
+        with open("inputs.txt", "r") as f:
+            with open("outputs.txt", "w") as out: 
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("test.md","r") as f:
+            content = f.read()
+        self.assertEqual(content, "")
+    
     # test redo
     def test_redo_1(self):
         commend_list = [
