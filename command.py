@@ -93,7 +93,7 @@ class DirShow(Command):
         self.dir = dir
 
     def excute(self):
-        list.dir_show(self.dir, INF, INF, 0)
+        list.dir_show(self.dir, 0, 0, 0)
 
 
 class CommandQueue(object):
