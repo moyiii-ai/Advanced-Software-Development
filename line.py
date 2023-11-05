@@ -170,12 +170,18 @@ class LineList(object):
     # TODO(B): Save the file ###################################################
     def save(self):
         # Notice: Only save the lines without deleted tag!
+        first_line = True
         f = open(self.file_name, 'w', encoding='gbk')
         cur = self.head
         while cur.next is not None:
             cur = cur.next
             if not cur.deleted:
-                f.write(cur.show())
+                if first_line:
+                    first_line = False
+                    f.write(cur.show())
+                else:
+                    f.write('\n' + cur.show())
+                
         f.close()
 
     # TODO(A): Insert the text at pos ##########################################
