@@ -123,9 +123,9 @@ class CommandQueue(object):
                 cmd_name == 'TreeShow'):
             return
 
-        self.tail = self.end + 1
+        self.queue.insert(self.tail, command)
+        self.tail = self.tail + 1
         self.end = self.tail
-        self.queue.append(command)
 
     # TODO(A): Undo the last command ###########################################
     def undo(self):
