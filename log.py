@@ -12,11 +12,16 @@ class History(object):
     # TODO(B): Start a new session and load the history file
     def start_session(self):
         # Don't forget to write a session line into history file!
-        self.tail = 0
-        self.queue = {}
         session_time = time.strftime("%Y%m%d %H:%M:%S")
         self.log_file.write(f"session start at {session_time}\n")
-        
+        with open(self.path, "r") as file:
+            lines = file.readlines()
+            for i, line in enumerate(lines):
+                if line.startswith("session start"):
+                    continue
+                command_time, command = line.strip().split(" ", 1)
+                self.queue[i] = (command_time, command)
+                self.tail = i + 1        
         #pass
     
     # TODO(B): Insert the command to the history buffer, and save it to file
