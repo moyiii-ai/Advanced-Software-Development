@@ -123,7 +123,7 @@ class CommandQueue(object):
                 cmd_name == 'TreeShow'):
             return
 
-        self.tail += 1
+        self.tail = self.end + 1
         self.end = self.tail
         self.queue.append(command)
 
