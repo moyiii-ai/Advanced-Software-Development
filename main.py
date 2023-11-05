@@ -71,7 +71,7 @@ def run():
             # 01 "save", save the file which is being edited #
 
             if (input[0] == "insert"):
-                if (input[1][0].isdigit()):
+                if ' ' in input[1] and input[1].split(' ')[0].isdigit():
                     second = input[1].split(' ')[0]
                     third = input[1][len(second) + 1:]
                     second = int(second)

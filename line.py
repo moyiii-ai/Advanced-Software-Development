@@ -42,13 +42,7 @@ class UnorderedList(Line):
 
     # TODO(B): to reuse in save, return the output string ######################
     def show(self):
-        if self.rank == 1:
-            tag = "-"
-        elif self.rank == 2:
-            tag = "+"
-        elif self.rank == 3:
-            tag = "*"
-        return tag + ' ' + self.text
+        return self.rank + ' ' + self.text
 
     # TODO(B): Tree show the Unordered list, use point
     def tree_show(self, tab, has_brother):
@@ -57,15 +51,7 @@ class UnorderedList(Line):
         else:
             prefix = "└──"
             
-        if self.rank == 1:
-            tag = "-"
-        elif self.rank == 2:
-            tag = "+"
-        elif self.rank == 3:
-            tag = "*"
-        return tab + prefix + tag + self.text
-        
-        #pass
+        return tab + prefix + self.rank + self.text
 
 
 class OrderedList(Line):
@@ -76,7 +62,7 @@ class OrderedList(Line):
 
     # TODO(B): to reuse in save, return the output string ######################
     def show(self):
-        return str(self.rank) + '.' + self.text
+        return str(self.rank) + '. ' + self.text
 
     # TODO(B): rank is only useful for OrderedList
     def tree_show(self, tab, has_brother):
@@ -297,7 +283,8 @@ class LineList(object):
 
                     
         for i in range(len(children)):
-            self.dir_show(children[i].text, start_level, children_level[i], False if i == len(children) - 1 else True)
+            self.dir_show(children[i].text, start_level, children_level[i], 
+                          False if i == len(children) - 1 else True)
 
 
     # TODO(B): Call dir_show for each top-level caption
@@ -315,5 +302,7 @@ class LineList(object):
                     top_captions.append(cur)
         
         for i in range(len(top_captions)):
-            self.dir_show(top_captions[i].text, top_captions[i].level, top_captions[i].level, False if i == len(top_captions) - 1 else True)
+            self.dir_show(top_captions[i].text, top_captions[i].level, 
+                          top_captions[i].level, 
+                          False if i == len(top_captions) - 1 else True)
         #pass
