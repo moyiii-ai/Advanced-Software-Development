@@ -1,5 +1,6 @@
 import os
 
+INF = float("inf")
 
 class Line(object):
     def __init__(self, text, next):
@@ -7,7 +8,7 @@ class Line(object):
         self.next = next
         self.deleted = 0
         # level is only useful for caption, for text, set it as 0
-        self.level = 0
+        self.level = INF
 
     # TODO(B): to reuse in save, return the output string ######################
     def show(self):
@@ -243,7 +244,7 @@ class LineList(object):
             cur = cur.next
             if not cur.deleted:
                 if cur.text == text:
-                    if level == 0 and not has_brother:
+                    if level == INF and not has_brother:
                         start_level = cur.level
                     level = cur.level
                     break
@@ -269,11 +270,11 @@ class LineList(object):
                 break
             if not cur.deleted:
                 #print(cur.level, upper_bound, level)
-                if cur.level <= level and cur.level != 0:
+                if cur.level <= level and cur.level != INF:
                     break
                 if cur.level > upper_bound:
                     continue
-                elif cur.level > level or cur.level == 0:
+                elif cur.level > level or cur.level == INF:
                     upper_bound = cur.level
                     children.append(cur)
                     if cur.level:
@@ -290,16 +291,29 @@ class LineList(object):
     # TODO(B): Call dir_show for each top-level caption
     def tree_show(self):
         cur = self.head
-        if cur.next is not None:
-            cur = cur.next
-            top_level = cur.level
-            top_captions = [cur]
+        top_level = INF
+        top_captions = []
+        start_cur = cur
+        top_cur = cur
         
         while cur.next is not None:
             cur = cur.next
-            if not cur.deleted:
-                if cur.level == top_level:
-                    top_captions.append(cur)
+            if not cur.deleted and cur.level <= top_level:
+                top_level = cur.level
+                top_cur = cur
+            elif not cur.deleted:
+                break
+            else:
+                continue
+            
+        while start_cur.next is not None:
+            start_cur = start_cur.next
+            if not start_cur.deleted:
+                if start_cur.level >= top_level and start_cur != top_cur:
+                    top_captions.append(start_cur)
+                elif start_cur == top_cur:
+                    top_captions.append(start_cur)
+                    break
         
         for i in range(len(top_captions)):
             self.dir_show(top_captions[i].text, top_captions[i].level, 
