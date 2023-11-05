@@ -297,7 +297,8 @@ class LineList(object):
 
                     
         for i in range(len(children)):
-            self.dir_show(children[i].text, start_level, children_level[i], False if i == len(children) - 1 else True)
+            self.dir_show(children[i].text, start_level, children_level[i], 
+                          False if i == len(children) - 1 else True)
 
 
     # TODO(B): Call dir_show for each top-level caption
@@ -315,5 +316,7 @@ class LineList(object):
                     top_captions.append(cur)
         
         for i in range(len(top_captions)):
-            self.dir_show(top_captions[i].text, top_captions[i].level, top_captions[i].level, False if i == len(top_captions) - 1 else True)
+            self.dir_show(top_captions[i].text, top_captions[i].level, 
+                          top_captions[i].level, 
+                          False if i == len(top_captions) - 1 else True)
         #pass
