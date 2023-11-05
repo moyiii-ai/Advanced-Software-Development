@@ -73,9 +73,11 @@ class Statistic(object):
             hours, remainder = divmod(remainder, 3600)
             minutes, seconds = divmod(remainder, 60)
             if days > 0:
-                self.stat_file.write(f"./{file_name} {days} 天 {hours} 小时 {minutes} 分钟\n")
+                self.stat_file.write(f"./{file_name} {days} 天 
+                                     {hours} 小时 {minutes} 分钟\n")
             elif hours > 0:
-                self.stat_file.write(f"./{file_name} {hours} 小时 {minutes} 分钟\n")
+                self.stat_file.write(f"./{file_name} {hours} 小时 
+                                     {minutes} 分钟\n")
             elif minutes > 0:
                 self.stat_file.write(f"./{file_name} {minutes} 分钟\n")
             else:
@@ -115,7 +117,8 @@ class Statistic(object):
     # TODO(B): Print the current working time
     def show_current(self):
         if self.queue:
-            file_name, elapsed_time = list(self.queue.keys())[-1], self.queue[list(self.queue.keys())[-1]]
+            file_name = list(self.queue.keys())[-1]
+            elapsed_time = self.queue[list(self.queue.keys())[-1]]
             elapsed_time += time.time() - self.work_time
             days, remainder = divmod(int(elapsed_time), 86400)
             hours, remainder = divmod(remainder, 3600)
