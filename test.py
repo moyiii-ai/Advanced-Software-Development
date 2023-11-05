@@ -362,6 +362,84 @@ class TestCLI(unittest.TestCase):
             content = f.read()
         self.assertEqual(content, "# a\n### c\n# d")
 
+    # test undo
+    def test_undo_1(self):
+        command_list = [
+            "load test.md",
+            "insert + a",
+            "undo",
+            "append-head + b",
+            "undo",
+            "append-tail + c",
+            "undo",
+            "insert + a",
+            "delete a",
+            "undo",
+            "insert + b",
+            "delete 2",
+            "undo",
+            "save",
+            "quit",
+        ]
+        with open("inputs.txt", "w") as f: 
+            f.write("\n".join(command_list))
+        with open("inputs.txt", "r") as f:
+            with open("outputs.txt", "w") as out:
+                subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
+
+        with open("test.md", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "+ a\n+ b")
+
+    # test undo
+    def test_undo_2(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "append-head - b",
+            "undo",
+            "insert - c",
+            "delete c",
+            "undo",
+            "save",
+            "quit",
+        ]
+        with open("inputs.txt", "w") as f: 
+            f.write("\n".join(command_list))
+        with open("inputs.txt", "r") as f:
+            with open("outputs.txt", "w") as out:
+                subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
+
+        with open("test.md", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "- a\n- c")
+    
+    # test redo
+    def test_redo_1(self):
+        commend_list = [
+            "load test.md",
+            "insert + a",
+            "undo",
+            "redo",
+            "insert + b",
+            "delete b",
+            "undo",
+            "undo",
+            "redo",
+            "redo",
+            "save",
+            "quit",
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(commend_list))
+        with open("inputs.txt", "r") as f:
+            with open("outputs.txt", "w") as out:
+                subprocess.call(["python","../main.py"], stdin=f, stdout=out)
+        
+        with open("test.md", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "+ a")
+
 
 if __name__ == "__main__":
     unittest.main()
