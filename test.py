@@ -89,7 +89,7 @@ class TestCLI(unittest.TestCase):
 
     # insert one line
     def test_insert_1(self):
-        command_list = ["load test.md", "insert a", "save", "quit"]
+        command_list = ["load test.md", "insert + a", "save", "quit"]
         with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
         with open("inputs.txt", "r") as f:
@@ -98,11 +98,11 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a")
+        self.assertEqual(content, "+ a")
 
     # insert two lines
     def test_insert_2(self):
-        command_list = ["load test.md", "insert a", "insert b", "save", "quit"]
+        command_list = ["load test.md", "insert + a", "insert + b", "save", "quit"]
         with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
         with open("inputs.txt", "r") as f:
@@ -111,11 +111,11 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a\nb")
+        self.assertEqual(content, "+ a\n+ b")
 
     # insert two lines with position
     def test_insert_3(self):
-        command_list = ["load test.md", "insert a", "insert 1 b", "save", "quit"]
+        command_list = ["load test.md", "insert + a", "insert 1 + b", "save", "quit"]
         with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
         with open("inputs.txt", "r") as f:
@@ -124,15 +124,15 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "b\na")
+        self.assertEqual(content, "+ b\n+ a")
 
     # insert three lines with position
     def test_insert_4(self):
         command_list = [
             "load test.md",
-            "insert a",
-            "insert 1 b",
-            "insert 1 c",
+            "insert + a",
+            "insert 1 + b",
+            "insert 1 + c",
             "save",
             "quit",
         ]
@@ -144,11 +144,11 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "c\nb\na")
+        self.assertEqual(content, "+ c\n+ b\n+ a")
 
     # overflow line insert
     def test_insert_5(self):
-        command_list = ["load test.md", "insert a", "insert 3 b", "save", "quit"]
+        command_list = ["load test.md", "insert + a", "insert 3 + b", "save", "quit"]
         with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
         with open("inputs.txt", "r") as f:
@@ -157,16 +157,16 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a\nb")
+        self.assertEqual(content, "+ a\n+ b")
 
     # insert line to existing file
     def test_insert_6(self):
         command_list = [
             "load test.md",
-            "insert a",
+            "insert + a",
             "save",
             "load test.md",
-            "insert 1 b",
+            "insert 1 + b",
             "save",
             "quit",
         ]
@@ -178,11 +178,11 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "b\na")
+        self.assertEqual(content, "+ b\n+ a")
 
     # append head once
     def test_append_head_1(self):
-        command_list = ["load test.md", "append-head a", "save", "quit"]
+        command_list = ["load test.md", "append-head + a", "save", "quit"]
         with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
         with open("inputs.txt", "r") as f:
@@ -191,14 +191,14 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a")
+        self.assertEqual(content, "+ a")
 
     # append head twice
     def test_append_head_2(self):
         command_list = [
             "load test.md",
-            "append-head a",
-            "append-head b",
+            "append-head + a",
+            "append-head + b",
             "save",
             "quit",
         ]
@@ -210,14 +210,14 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "b\na")
+        self.assertEqual(content, "+ b\n+ a")
 
     # append head once
     def test_append_head_3(self):
         command_list = [
             "load test.md",
-            "insert a",
-            "append-head b",
+            "insert + a",
+            "append-head + b",
             "save",
             "quit",
         ]
@@ -229,56 +229,70 @@ class TestCLI(unittest.TestCase):
 
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "b\na")
-    
+        self.assertEqual(content, "+ b\n+ a")
+
     # append tail once
     def test_append_tail_1(self):
-        command_list = ["load test.md", "append-tail a", "save", "quit"]
+        command_list = ["load test.md", "append-tail + a", "save", "quit"]
         with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
-        with open("inputs.txt", "r") as f: 
+        with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a")
-    
+        self.assertEqual(content, "+ a")
+
     # append tail twice
     def test_append_tail_2(self):
-        command_list = ["load test.md", "append-tail a", "append-tail b", "save", "quit"]
-        with open("inputs.txt", "w") as f: 
+        command_list = [
+            "load test.md",
+            "append-tail + a",
+            "append-tail + b",
+            "save",
+            "quit",
+        ]
+        with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
-        with open("inputs.txt", "r") as f: 
+        with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a\nb")
-    
+        self.assertEqual(content, "+ a\n+ b")
+
     # mix append head and append tail
     def test_mix_head_tail(self):
-        command_list = ["load test.md", "append-tail a", "append-head b", "append-tail c", "append-head d", "save", "quit"]
-        with open("inputs.txt", "w") as f: 
+        command_list = [
+            "load test.md",
+            "append-tail + a",
+            "append-head + b",
+            "append-tail + c",
+            "append-head + d",
+            "save",
+            "quit",
+        ]
+        with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
-        with open("inputs.txt", "r") as f: 
+        with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "d\nb\na\nc")
-    
+        self.assertEqual(content, "+ d\n+ b\n+ a\n+ c")
+
     # delete with line number
     def test_delete_number_1(self):
-        command_list = ["load test.md", "insert a", "delete 1", "save", "quit"]
-        with open("inputs.txt", "w") as f: 
+        command_list = ["load test.md", "insert + a", "delete 1", "save", "quit"]
+        with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
-        with open("inputs.txt", "r") as f: 
+        with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
         self.assertEqual(content, "")
@@ -287,41 +301,41 @@ class TestCLI(unittest.TestCase):
     def test_mix_insert_delete_number_1(self):
         command_list = [
             "load test.md",
-            "insert a",
-            "insert b",
-            "insert c",
+            "insert + a",
+            "insert + b",
+            "insert + c",
             "delete 2",
-            "insert 2 d",
-            "insert 1 e",
+            "insert 2 + d",
+            "insert 1 + e",
             "delete 1",
-            "insert 2 f",
+            "insert 2 + f",
             "delete 4",
             "save",
             "quit",
         ]
-        with open("inputs.txt", "w") as f: 
+        with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
         with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
-        self.assertEqual(content, "a\nf\nd")
+        self.assertEqual(content, "+ a\n+ f\n+ d")
 
     # delete with line content
     def test_delete_content_1(self):
         command_list = ["load test.md", "insert # a", "delete a", "save", "quit"]
-        with open("inputs.txt", "w") as f: 
+        with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
-        with open("inputs.txt", "r") as f: 
+        with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
         self.assertEqual(content, "")
-    
+
     # mix insert and delete with line content
     def test_mix_insert_delete_content_1(self):
         command_list = [
@@ -338,12 +352,12 @@ class TestCLI(unittest.TestCase):
             "save",
             "quit",
         ]
-        with open("inputs.txt", "w") as f: 
+        with open("inputs.txt", "w") as f:
             f.write("\n".join(command_list))
-        with open("inputs.txt", "r") as f: 
+        with open("inputs.txt", "r") as f:
             with open("outputs.txt", "w") as out:
                 subprocess.call(["python", "../main.py"], stdin=f, stdout=out)
-        
+
         with open("test.md", "r") as f:
             content = f.read()
         self.assertEqual(content, "# a\n### c\n# d")
