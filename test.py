@@ -464,7 +464,263 @@ class TestCLI(unittest.TestCase):
         with open("test.md", "r") as f:
             content = f.read()
         self.assertEqual(content, "+ a")
+    
+    # test list
+    def test_list_1(self):
+        command_list = [
+            "load test.md",
+            "insert + a",
+            "insert - b",
+            "insert * c",
+            "insert 1. d",
+            "insert 2. e",
+            "insert # f",
+            "insert ## g",
+            "insert ### h",
+            "list",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+        
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "+ a\n- b\n* c\n1. d\n2. e\n# f\n## g\n### h\n"
+        self.assertIn(expected_content, content)
+    
+    # test list tree
+    def test_list_tree_1(self):
+        command_list = [
+            "load test.md",
+            "insert # a",
+            "insert ## b",
+            "insert # c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "list-tree",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
 
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "└──a\n   └──b\n├──c\n└──d\n   └──+e\n└──f\n   └──g\n      ├──1.h\n      └──2.i\n└──j\n   ├──k\n   └──l\n      └──m\n         ├──-n\n         └──*o\n"
+        self.assertIn(expected_content, content)
+    
+    # test dir tree
+    def test_dir_tree_1(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "insert ### b",
+            "insert ## c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "dir-tree",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "├──-a\n├──b\n├──c\n└──d\n   └──+e\n└──f\n   └──g\n      ├──1.h\n      └──2.i\n└──j\n   ├──k\n   └──l\n      └──m\n         ├──-n\n         └──*o\n"
+        self.assertIn(expected_content, content)
+
+    # test dir tree
+    def test_dir_tree_2(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "insert ### b",
+            "insert ## c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "dir-tree a",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "└──-a"
+        self.assertIn(expected_content, content)
+
+    # test dir tree
+    def test_dir_tree_3(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "insert ### b",
+            "insert ## c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "dir-tree d",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "└──d\n   └──+e"
+        self.assertIn(expected_content, content)
+    
+    # test dir tree
+    def test_dir_tree_4(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "insert ### b",
+            "insert ## c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "dir-tree j",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "└──j\n   ├──k\n   └──l\n      └──m\n         ├──-n\n         └──*o"
+        self.assertIn(expected_content, content)
+
+    # test dir tree
+    def test_dir_tree_5(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "insert ### b",
+            "insert ## c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "dir-tree l",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "└──l\n   └──m\n      ├──-n\n      └──*o\n"
+        self.assertIn(expected_content, content)
+    
+    # test dir tree
+    def test_dir_tree_6(self):
+        command_list = [
+            "load test.md",
+            "insert - a",
+            "insert ### b",
+            "insert ## c",
+            "insert # d",
+            "insert + e",
+            "insert # f",
+            "insert ## g",
+            "insert 1. h",
+            "insert 2. i",
+            "insert # j",
+            "insert ## k",
+            "insert ## l",
+            "insert ### m",
+            "insert - n",
+            "insert * o",
+            "dir-tree k",
+            "quit"
+        ]
+        with open("inputs.txt", "w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+        expected_content = "└──k"
+        self.assertIn(expected_content, content)
 
 if __name__ == "__main__":
     unittest.main()
