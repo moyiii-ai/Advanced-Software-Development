@@ -140,15 +140,17 @@ class CommandQueue(object):
                     cmd_name == 'TreeShow'):
                 continue'''
 
-        if len(self.queue) >= self.tail > 0:
+        if self.tail > 0:
             self.tail -= 1
             self.queue[self.tail].undo()
+        else:
+            print('Nothing to undo')
 
     # TODO(A): Redo the last command, just call command.excute() again #########
     def redo(self):
         # Notice: we can redo only if tail < end.
         if not self.tail < self.end:
-            return
+            print('Nothing to redo')
         '''while True:
             self.tail += 1
             cmd_name = self.get_command_name()
