@@ -23,6 +23,23 @@ def run():
 
         # The command would be a sentence
         # split the sentence to find out the first word, which is input[0] #
+            if input[0] not in [
+                "history",
+                "stats",
+                "undo",
+                "redo",
+                "load",
+                "save",
+                "insert",
+                "append-head",
+                "append-tail",
+                "delete",
+                "list",
+                "list-tree",
+                "dir-tree",
+            ]:
+                print("Invalid input")
+                return
 
             if (input[0] == "history"):
                 if (len(input) > 1):
