@@ -1,12 +1,14 @@
 import os
 
+LEAF_LEVEL = 999
+
 class Line(object):
     def __init__(self, text, next):
         self.text = text
         self.next = next
         self.deleted = 0
-        # level is only useful for caption, for text, set it as 0
-        self.level = 0
+        # level is only useful for caption, for text, set it as LEAF_LEVEL
+        self.level = LEAF_LEVEL
 
     # TODO(B): to reuse in save, return the output string ######################
     def show(self):
@@ -234,101 +236,61 @@ class LineList(object):
                 print(cur.show())
 
     # TODO(B): Recursively call dir_show for each subtree
-    def dir_show(self, text, start_level, level, has_brother):
-
+    def dir_show(self, text):
+        line_list = []
+        start_pos = 0
+        end_pos = self.count
+        i = 0
+        find_start = False
+        find_end = False
+        text_level = LEAF_LEVEL + 1
         cur = self.head
-        
         while cur.next is not None:
             cur = cur.next
             if not cur.deleted:
+                line_list.append(cur)
+
                 if cur.text == text:
-                    if level == 0 and not has_brother:
-                        start_level = cur.level
-                    level = cur.level
-                    break
-
-        tab_num = level - start_level
-        if type(cur) == Line:
-            print(cur.show())
-        else:
-            print(cur.tree_show(tab_num * "   ", has_brother))
-
-        if not level:
-            return
-
-        children = []
-        children_level = []
-        upper_bound = level + 1000
+                    start_pos = i
+                    text_level = cur.level
+                    find_start = True
+                
+                if find_start and not find_end and cur.level <= text_level:
+                    end_pos = i - 1
+                    find_end = True
         
-        while True:
-            if cur is None:
-                break
-            cur = cur.next
-            if cur is None:
-                break
-            if not cur.deleted:
-                #print(cur.level, upper_bound, level)
-                if cur.level <= level and cur.level != 0:
-                    break
-                if cur.level > upper_bound:
-                    continue
-                elif cur.level > level or cur.level == 0:
-                    upper_bound = cur.level
-                    children.append(cur)
-                    if cur.level:
-                        children_level.append(cur.level)
-                    else:
-                        children_level.append(upper_bound + 1)
-
-                    
-        for i in range(len(children)):
-            self.dir_show(children[i].text, start_level, children_level[i], 
-                          False if i == len(children) - 1 else True)
+                i += 1
+        
+        self.dir_show_real(start_pos, min(end_pos, len(line_list) - 1), line_list, 0)
+    
+    def dir_show_real(self, start_pos, end_pos, line_list, tab_num):
+        if start_pos > end_pos:
+            return
+        
+        cur_level_pos_list = []
+        low_level = LEAF_LEVEL + 1
+        for i in range(start_pos, end_pos + 1):
+            if line_list[i].level <= low_level:
+                low_level = line_list[i].level
+                cur_level_pos_list.append(i)
+        
+        # print cur level and recursively call dir_show_real
+        for i in range(len(cur_level_pos_list)):
+            has_brother = True if i != len(cur_level_pos_list) - 1 and cur_level_pos_list[i] == cur_level_pos_list[i + 1] - 1 else False
+            print(line_list[cur_level_pos_list[i]].tree_show(tab_num * "   ", has_brother))
+            if i != len(cur_level_pos_list) - 1:
+                self.dir_show_real(cur_level_pos_list[i] + 1, cur_level_pos_list[i + 1] - 1, line_list, tab_num + 1)
+            else:
+                self.dir_show_real(cur_level_pos_list[i] + 1, end_pos, line_list, tab_num + 1)
 
 
     # TODO(B): Call dir_show for each top-level caption
     def tree_show(self):
+        line_list = []
         cur = self.head
-        
-        if cur.next != None and cur.next.level == 0:
-            top_level = 999
-        else:
-            top_level = cur.next.level
-            
-        top_captions = []
-        start_cur = cur
-        top_cur = cur
-        
         while cur.next is not None:
             cur = cur.next
-            if not cur.deleted and cur.level != 0 and cur.level <= top_level:
-                top_level = cur.level
-                top_cur = cur
-            elif not cur.deleted and cur.next is None and top_level == 999:
-                top_level = 0
-                top_cur = cur
-                break
-            else:
-                continue
-        #print(top_cur.text)   
-        if start_cur.next is not None: 
-            cur_topl = start_cur.next.level
-        while start_cur.next is not None:
-            start_cur = start_cur.next
-            if not start_cur.deleted:
-                if start_cur.level >= top_level and start_cur != top_cur:
-                    cur_topl = start_cur.level
-                    top_captions.append(start_cur)
-                elif cur_topl == 0:
-                    top_captions.append(start_cur)
-                    if start_cur == top_cur:
-                        break
-                elif start_cur == top_cur:
-                    top_captions.append(start_cur)
-                    break
-        #print(len(top_captions))
-        for i in range(len(top_captions)):
-            self.dir_show(top_captions[i].text, top_captions[i].level, 
-                        top_captions[i].level, 
-                        False if i == len(top_captions) - 1 else True)
-        #pass
+            if not cur.deleted:
+                line_list.append(cur)
+        
+        self.dir_show_real(0, len(line_list) - 1, line_list, 0)
