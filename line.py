@@ -255,7 +255,12 @@ class LineList(object):
                     text_level = cur.level
                     find_start = True
 
-                if find_start and not find_end and cur.level <= text_level:
+                if (
+                    find_start
+                    and start_pos != i
+                    and not find_end
+                    and cur.level <= text_level
+                ):
                     end_pos = i - 1
                     find_end = True
 
