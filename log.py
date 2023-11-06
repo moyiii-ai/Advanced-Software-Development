@@ -44,7 +44,7 @@ class History(object):
     
     # Print all history command
     def show_all(self):
-        self.show_num(self, self.tail)
+        self.show_num(self.tail)
 
 
 class Statistic(object):
