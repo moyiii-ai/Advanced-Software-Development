@@ -60,6 +60,21 @@
 
 ## 2. 测试结果
 
+本项目测试分两个部分，基本功能模块使用自动脚本测试，日志和统计模块使用手动测试。**需要注意的是**，本测试的目的在于尽量覆盖正常使用环境下的功能（较少考虑非法输入序列）
+
+### 基本功能模块
+此部分使用GitHub Action自动测试，测试脚本为`test.py`，包括33个测试用例，测试结果如下：
+
+<center class="half">
+<img src="images/test_1.png" style="zoom: 30%;" /><img src="images/test_2.png" style="zoom: 30%;" />
+</center>
+
+### 日志和统计模块
+此部分由于涉及时间操作，故使用手动测试，测试结果如下：
+
+<center class="half">
+<img src="images/test_his.png" style="zoom:31.1%;" /><img src="images/test_stats.png" style="zoom: 30%;" />
+</center>
 
 
 ## 3. 讨论
