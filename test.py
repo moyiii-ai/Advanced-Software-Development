@@ -179,6 +179,52 @@ class TestCLI(unittest.TestCase):
         with open("test.md", "r") as f:
             content = f.read()
         self.assertEqual(content, "+ b\n+ a")
+    
+    # modify two files
+    def test_multi_file_1(self):
+        command_list = [
+            "load test.md",
+            "insert + a",
+            "save",
+            "load test_2.md",
+            "insert + b",
+            "save",
+            "load test.md",
+            "insert 1 + c",
+            "save",
+            "load test_2.md",
+            "insert 1 + d",
+            "save",
+            "load test.md",
+            "list",
+            "load test_2.md",
+            "list",
+            "insert - e",
+            "list",
+            "save",
+            "quit"
+        ]
+        with open("inputs.txt","w") as f:
+            f.write("\n".join(command_list))
+        with open("inputs.txt","r") as f:
+            with open("outputs.txt","w") as out:
+                subprocess.call(["python","../main.py"],stdin=f,stdout=out)
+        
+        with open("test.md","r") as f:
+            content = f.read()
+        self.assertEqual(content, "+ c\n+ a")
+        with open("test_2.md","r") as f:
+            content = f.read()
+        self.assertEqual(content, "+ d\n+ b\n- e")
+
+        with open("outputs.txt","r") as f:
+            content = f.read()
+            self.assertIn("+ c\n+ a", content)
+            self.assertIn("+ d\n+ b", content)
+            pos_1 = content.find("+ d\n+ b")
+            pos_2 = content.find("+ d\n+ b", pos_1 + 1)
+            self.assertNotEqual(pos_2, -1)
+            self.assertIn("+ d\n+ b\n- e", content)
 
     # append head once
     def test_append_head_1(self):
