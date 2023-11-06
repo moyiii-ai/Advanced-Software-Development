@@ -146,6 +146,7 @@ class LineList(object):
             print('Load file:', file)
 
         lines = openfile.readlines()
+        self.head = Line("", None)
         cur = self.head
         for line in lines:
             cur = self.line_creation(cur, line)
