@@ -1,7 +1,7 @@
 # 高级软件开发 小组Lab：简易Markdown编辑器
 
 ## 0. 运行方法
-
+代码运行：python main.py
 
 
 ## 1. 设计
