@@ -19,7 +19,7 @@ def run():
             #history.push(input)
             input_0 = input.split(' ')[0]
             input_1 = input[len(input_0) + 1:]
-            input = [input_0, input_1]
+            input = [input_0, input_1] if input_1 != '' else [input_0]
 
         # The command would be a sentence
         # split the sentence to find out the first word, which is input[0] #
