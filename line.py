@@ -7,10 +7,10 @@ class Line(object):
         self.text = text
         self.next = next
         self.deleted = 0
-        # level is only useful for caption, for text, set it as LEAF_LEVEL
+        # Level is only useful for caption, for text, set it as LEAF_LEVEL
         self.level = LEAF_LEVEL
 
-    # TODO(B): to reuse in save, return the output string ######################
+    # To reuse in save, return the output string 
     def show(self):
         return self.text
 
@@ -20,11 +20,10 @@ class Caption(Line):
         super(Caption, self).__init__(text, next)
         self.level = level
 
-    # TODO(B): to reuse in save, return the output string ######################
+    # To reuse in save, return the output string 
     def show(self):
         return self.level * '#' + ' ' + self.text
 
-    # TODO(B)
     def tree_show(self, tab, has_brother):
         if has_brother:
             prefix = "├──"
@@ -32,8 +31,6 @@ class Caption(Line):
             prefix = "└──"
             
         return tab + prefix + self.text
-        
-        #pass
 
 
 class UnorderedList(Line):
@@ -41,11 +38,11 @@ class UnorderedList(Line):
         super(UnorderedList, self).__init__(text, next)
         self.rank = rank
 
-    # TODO(B): to reuse in save, return the output string ######################
+    # To reuse in save, return the output string
     def show(self):
         return self.rank + ' ' + self.text
 
-    # TODO(B): Tree show the Unordered list, use point
+    # Tree show the Unordered list, use point
     def tree_show(self, tab, has_brother):
         if has_brother:
             prefix = "├──"
@@ -61,11 +58,10 @@ class OrderedList(Line):
         super(OrderedList, self).__init__(text, next)
         self.rank = rank
 
-    # TODO(B): to reuse in save, return the output string ######################
+    # To reuse in save, return the output string
     def show(self):
         return str(self.rank) + '. ' + self.text
 
-    # TODO(B): rank is only useful for OrderedList
     def tree_show(self, tab, has_brother):
         if has_brother:
             prefix = "├──"
@@ -100,7 +96,7 @@ class LineList(object):
         # Remove all the \n which is unnecessary
         # Here, we have to decide what type the line is and create instance
         if line[0] == '*' or line[0] == '+' or line[0] == '-':
-            # Unordered list, start with * + -, record the tag and text #
+            # Unordered list, start with * + -, record the tag and text
             cur.next = UnorderedList(line[2:], None, line[0])
             cur = cur.next
             self.count += 1
@@ -116,7 +112,7 @@ class LineList(object):
                     else:
                         break
         elif line[0] == '#':
-            # Caption, start with many #, the number of # is same as its level #
+            # Caption, start with many #, the number of # is same as its level
             for i in range(len(line)):
                 if line[i] != '#':
                     cur.next = Caption(line[i + 1:], None, i)
@@ -124,17 +120,17 @@ class LineList(object):
                     self.count += 1
                     break
         else:
-            # Default line #
+            # Default line
             cur.next = Line(line, None)
             cur = cur.next
             self.count += 1
 
         return cur
 
-    # TODO(B): Load the file, create a Line object for each line in file #######
+    # Load the file, create a Line object for each line in file
     def load(self, file):
         self.file_name = file
-        # when saving, the filename is not given, so record the name here #
+        # When saving, the filename is not given, so record the name here
         if os.path.exists(self.file_name):
             openfile = open(self.file_name, 'r', encoding='gbk')
             print('Load file:', file)
@@ -151,11 +147,9 @@ class LineList(object):
         for line in lines:
             cur = self.line_creation(cur, line)
 
-        # self.show()
-        # print(self.count)
         openfile.close()
 
-    # TODO(B): Save the file ###################################################
+    # Save the file
     def save(self):
         # Notice: Only save the lines without deleted tag!
         first_line = True
@@ -172,10 +166,10 @@ class LineList(object):
                 
         f.close()
 
-    # TODO(A): Insert the text at pos ##########################################
+    # Insert the text at pos
     def insert(self, pos, text):
         # Notice: Don't forget to update self.count!
-        # judge the type of text and create different kinds of line
+        # Judge the type of text and create different kinds of line
         cur = self.head
         while pos > 1 and cur.next is not None:
             cur = cur.next
@@ -187,7 +181,7 @@ class LineList(object):
         cur = self.line_creation(cur, text)
         cur.next = foll
 
-    # TODO(A): Delete the node by text, just mark the deleted tag ##############
+    # Delete the node by text, just mark the deleted tag
     def delete_text(self, text):
         # Notice: Don't forget to update self.count!
         cur = self.head
@@ -199,7 +193,7 @@ class LineList(object):
                     self.count -= 1
                     break
 
-    # TODO(A): Delete the node in pos and return the text ######################
+    # Delete the node in pos and return the text
     def delete_pos(self, pos):
         cur = self.head
         if pos > self.count:
@@ -216,7 +210,7 @@ class LineList(object):
         self.count -= 1
         return text
 
-    # TODO(A): Remove the delete tag by text ###################################
+    # Remove the delete tag by text
     def recover(self, text):
         cur = self.head
         while cur.next is not None:
@@ -227,16 +221,16 @@ class LineList(object):
                     self.count += 1
                     break
 
-    # TODO(B): Just call show for each line ####################################
+    # Just call show for each line
     def show(self):
-        # traverse the list, print everything without delete tag #
+        # Traverse the list, print everything without delete tag
         cur = self.head
         while cur.next is not None:
             cur = cur.next
             if not cur.deleted:
                 print(cur.show())
 
-    # TODO(B): Recursively call dir_show for each subtree
+    # Recursively call dir_show for each subtree
     def dir_show(self, text):
         line_list = []
         start_pos = 0
@@ -267,7 +261,8 @@ class LineList(object):
 
                 i += 1
 
-        self.dir_show_real(start_pos, min(end_pos, len(line_list) - 1), line_list, 0)
+        self.dir_show_real(start_pos, min(end_pos, len(line_list) - 1),
+                           line_list, 0)
 
     def dir_show_real(self, start_pos, end_pos, line_list, tab_num):
         if start_pos > end_pos:
@@ -280,7 +275,7 @@ class LineList(object):
                 low_level = line_list[i].level
                 cur_level_pos_list.append(i)
 
-        # print cur level and recursively call dir_show_real
+        # Print cur level and recursively call dir_show_real
         for i in range(len(cur_level_pos_list)):
             has_brother = (
                 True
@@ -289,7 +284,9 @@ class LineList(object):
                 else False
             )
             print(
-                line_list[cur_level_pos_list[i]].tree_show(tab_num * "   ", has_brother)
+                line_list[cur_level_pos_list[i]].tree_show(
+                    tab_num * "   ", has_brother
+                )
             )
             if i != len(cur_level_pos_list) - 1:
                 self.dir_show_real(
@@ -303,7 +300,7 @@ class LineList(object):
                     cur_level_pos_list[i] + 1, end_pos, line_list, tab_num + 1
                 )
 
-    # TODO(B): Call dir_show for each top-level caption
+    # Call dir_show for each top-level caption
     def tree_show(self):
         line_list = []
         cur = self.head
