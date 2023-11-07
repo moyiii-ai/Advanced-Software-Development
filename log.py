@@ -16,12 +16,14 @@ class History(object):
         self.log_file.write(f"session start at {session_time}\n")
         with open(self.path, "r") as file:
             lines = file.readlines()
-            for i, line in enumerate(lines):
+            index = 0
+            for _, line in enumerate(lines):
                 if line.startswith("session start"):
                     continue
                 command_time, command = line.strip().split(" ", 1)
-                self.queue[i] = (command_time, command)
-                self.tail = i + 1        
+                self.queue[index] = (command_time, command)
+                index = index + 1
+            self.tail = index
         #pass
     
     # TODO(B): Insert the command to the history buffer, and save it to file
