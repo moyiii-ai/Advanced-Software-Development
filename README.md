@@ -1,5 +1,7 @@
 # 高级软件开发 小组Lab：简易Markdown编辑器
 
+项目链接：https://github.com/moyiii-ai/Advanced-Software-Development
+
 ## 0. 运行方法
 python版本：Python 3.9.6
 在Advanced-Software-Development文件夹下运行命令：python main.py
