@@ -4,6 +4,7 @@
 
 ## 0. 运行方法
 python版本：Python 3.9.6
+
 在Advanced-Software-Development文件夹下运行命令：python main.py
 
 
