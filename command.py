@@ -108,7 +108,7 @@ class CommandQueue(object):
     def get_command_name(self, command):
         return str(command).split(' ')[0][9:]
 
-    # TODO(A): Execute by calling excute(), push it in the end of queue ########
+    # Execute by calling excute(), push it in the end of queue
     def excute(self, command):
         # Notice: for the load/save command, clear the queue as they can't undo
         # For any command, set end equals to tail, as now we can't redo
@@ -127,18 +127,10 @@ class CommandQueue(object):
         self.tail = self.tail + 1
         self.end = self.tail
 
-    # TODO(A): Undo the last command ###########################################
+    # Undo the last command
     def undo(self):
         # Notice: skip the list/list-tree/dir-tree, but no load/save
         # Move the tail forward, but don't change the end.
-        '''while self.tail > 1:
-            self.tail -= 1
-            cmd_name = self.get_command_name()
-            if cmd_name == 'Load' or cmd_name == 'Save':
-                break
-            if (cmd_name == 'Show' or cmd_name == 'DirShow' or
-                    cmd_name == 'TreeShow'):
-                continue'''
 
         if self.tail > 0:
             self.tail -= 1
@@ -146,20 +138,11 @@ class CommandQueue(object):
         else:
             print('Nothing to undo')
 
-    # TODO(A): Redo the last command, just call command.excute() again #########
+    # Redo the last command, just call command.excute() again
     def redo(self):
         # Notice: we can redo only if tail < end.
         if not self.tail < self.end:
             print('Nothing to redo')
-        '''while True:
-            self.tail += 1
-            cmd_name = self.get_command_name()
-            if cmd_name == 'Load' or cmd_name == 'Save':
-                break
-            if (cmd_name == 'Show' or cmd_name == 'DirShow'
-                    or cmd_name == 'TreeShow'):
-                continue'''
 
         self.queue[self.tail].excute()
         self.tail += 1
-

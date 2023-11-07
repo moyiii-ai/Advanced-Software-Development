@@ -11,8 +11,8 @@ def run():
     stats.start_session()
 
     class Adapter(object):
-        # Converts the original command into a format
-        # that can be executed directly #
+        # Converts the original command into a format 
+        # that can be executed directly
 
         def solve(self, input):
             history.push(input)
@@ -22,7 +22,7 @@ def run():
             input = [input_0, input_1] if input_1 != '' else [input_0]
 
         # The command would be a sentence
-        # split the sentence to find out the first word, which is input[0] #
+        # split the sentence to find out the first word, which is input[0]
             if input[0] not in [
                 "history",
                 "stats",
@@ -47,9 +47,9 @@ def run():
                 else:
                     history.show_all()
                 return
-            # HISTORY command, 2 usages #
-            # 01 "history x" (x is number), show x history in list #
-            # 02 "history", show all history in list #
+            # HISTORY command, 2 usages
+            # 01 "history x" (x is number), show x history in list
+            # 02 "history", show all history in list
 
             if (input[0] == "stats"):
                 if (len(input) > 1 and input[1] == "all"):
@@ -57,42 +57,41 @@ def run():
                 else:
                     stats.show_current()
                 return
-            # STATS command, 2 usages #
-            # 01 "stats all", show all stats in list #
-            # 02 "stats", show current stats #
+            # STATS command, 2 usages
+            # 01 "stats all", show all stats in list
+            # 02 "stats", show current stats
 
             if (input[0] == "undo"):
                 queue.undo()
                 return
-            # UNDO command, 1 usage #
-            # 01 "undo", just undo the last command #
+            # UNDO command, 1 usage
+            # 01 "undo", just undo the last command
 
             if (input[0] == "redo"):
                 queue.redo()
                 return
-            # REDO command, 1 usage #
-            # 01 "redo", just execute the last revoked command #
+            # REDO command, 1 usage
+            # 01 "redo", just execute the last revoked command
 
             if (input[0] == "load"):
                 stats.open_file(input[1])
-                # stats.open_file does nothing else but record the time #
+                # stats.open_file does nothing else but record the time
                 command = Load(input[1])
-                # Load(input[1]) is the func to open the file #
-            # LOAD command, 1 usage #
-            # 01 "load PATH", open the file at PATH #
-            # Hints: if file at PATH is not existed, create it #
+                # Load(input[1]) is the func to open the file
+            # LOAD command, 1 usage
+            # 01 "load PATH", open the file at PATH
+            # Hints: if file at PATH is not existed, create it
 
             if (input[0] == "save"):
                 command = Save()
-            # SAVE command, 1 usage #
-            # 01 "save", save the file which is being edited #
+            # SAVE command, 1 usage
+            # 01 "save", save the file which is being edited
 
             if (input[0] == "insert"):
                 if ' ' in input[1] and input[1].split(' ')[0].isdigit():
                     second = input[1].split(' ')[0]
                     third = input[1][len(second) + 1:]
                     second = int(second)
-                    #command = Insert(int(input[1]), ' '.join(input[2:]))
                     command = Insert(second, third)
                 else:
                     command = AppendTail(' '.join(input[1:]))

@@ -9,7 +9,7 @@ class History(object):
 
     path = "history.log"
     log_file = open(path, "a")
-    # TODO(B): Start a new session and load the history file
+    # Start a new session and load the history file
     def start_session(self):
         # Don't forget to write a session line into history file!
         session_time = time.strftime("%Y%m%d %H:%M:%S")
@@ -24,17 +24,15 @@ class History(object):
                 self.queue[index] = (command_time, command)
                 index = index + 1
             self.tail = index
-        #pass
     
-    # TODO(B): Insert the command to the history buffer, and save it to file
+    # Insert the command to the history buffer, and save it to file
     def push(self, command):
         command_time = time.strftime("%Y%m%d %H:%M:%S")
         self.queue[self.tail] = (command_time, command)
         self.tail += 1
         self.log_file.write(f"{command_time} {command}\n")
-        #pass
     
-    # TODO(B): Print the last num history command
+    # Print the last num history command
     def show_num(self, num):
         if num > self.tail:
             num = self.tail
@@ -42,7 +40,6 @@ class History(object):
         for i in range(self.tail - num, self.tail):
             timestamp, command = self.queue[i]
             print(f"{timestamp} {command}")
-        #pass
     
     # Print all history command
     def show_all(self):
@@ -60,7 +57,7 @@ class Statistic(object):
 
     path = "stats.log"
     stat_file = open(path, "a")
-    # TODO(B): Start a new session, clear the queue and load the stats file    
+    # Start a new session, clear the queue and load the stats file    
     def start_session(self):
         # Notice: Don't forget to write a session line into stats file!
         self.tail = 0
@@ -69,7 +66,6 @@ class Statistic(object):
         self.cur_file = ""
         session_time = time.strftime("%Y%m%d:%H%M%S")
         self.stat_file.write(f"session start {session_time}\n")
-        #pass
 
     def quit_session(self):
         for file_name, elapsed_time in self.queue.items():
@@ -87,7 +83,7 @@ class Statistic(object):
             else:
                 self.stat_file.write(f"./{file_name} {seconds} 秒\n")
         
-    # TODO(B): Open a new file and record the start time
+    # Open a new file and record the start time
     # save the working time of last file in the queue and stats file
     def open_file(self, file_name):
         if self.queue:
@@ -100,10 +96,8 @@ class Statistic(object):
             self.queue[file_name] += 0
         self.work_time = time.time()
         self.cur_file = file_name
-            
-        #pass
     
-    # TODO(B): Print all working time in the queue
+    # Print all working time in the queue
     def show_all(self):
         for file_name, elapsed_time in self.queue.items():
             if file_name == self.cur_file:
@@ -119,9 +113,8 @@ class Statistic(object):
                 print(f"./{file_name} {minutes} 分钟")
             else:
                 print(f"./{file_name} {seconds} 秒")   
-        #pass
     
-    # TODO(B): Print the current working time
+    # Print the current working time
     def show_current(self):
         if self.queue:
             elapsed_time = self.queue[self.cur_file]
@@ -137,4 +130,3 @@ class Statistic(object):
                 print(f"./{self.cur_file} {minutes} 分钟")
             else:
                 print(f"./{self.cur_file} {seconds} 秒")
-        #pass
