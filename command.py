@@ -3,13 +3,15 @@ from line import *
 
 list = LineList()
 
+
 class Command(object):
     pass
+
 
 class Load(Command):
     def __init__(self, file):
         self.file = file
-    
+
     def excute(self):
         list.load(self.file)
 
@@ -34,7 +36,7 @@ class Insert(Command):
 class AppendHead(Command):
     def __init__(self, text):
         self.text = text
-    
+
     def excute(self):
         list.insert(1, self.text)
 
@@ -45,7 +47,7 @@ class AppendHead(Command):
 class AppendTail(Command):
     def __init__(self, text):
         self.text = text
-    
+
     def excute(self):
         list.insert(list.count + 1, self.text)
 
@@ -70,9 +72,10 @@ class DeletePos(Command):
 
     def excute(self):
         self.text = list.delete_pos(self.number)
-    
+
     def undo(self):
         list.recover(self.text)
+        print('undoing')
 
 
 class Show(Command):
@@ -90,7 +93,7 @@ class DirShow(Command):
         self.dir = dir
 
     def excute(self):
-        list.dir_show(self.dir, 0, 0)
+        list.dir_show(self.dir)
 
 
 class CommandQueue(object):
@@ -100,21 +103,63 @@ class CommandQueue(object):
         # As we need to undo and redo, use a list to implement queue
         self.tail = 0
         self.end = 0
-        self.queue = {}
+        self.queue = []
 
-    # TODO(A): Execute by calling command.excute(), push it in the end of queue
+    def get_command_name(self, command):
+        return str(command).split(' ')[0][9:]
+
+    # TODO(A): Execute by calling excute(), push it in the end of queue ########
     def excute(self, command):
         # Notice: for the load/save command, clear the queue as they can't undo
         # For any command, set end equals to tail, as now we can't redo
-        pass
+        command.excute()
+        cmd_name = self.get_command_name(command)
+        if cmd_name == 'Load' or cmd_name == 'Save':
+            self.tail = 0
+            self.end = 0
+            self.queue = []
+            return
+        if (cmd_name == 'Show' or cmd_name == 'DirShow' or
+                cmd_name == 'TreeShow'):
+            return
 
-    # TODO(A): Undo the last command
+        self.queue.insert(self.tail, command)
+        self.tail = self.tail + 1
+        self.end = self.tail
+
+    # TODO(A): Undo the last command ###########################################
     def undo(self):
         # Notice: skip the list/list-tree/dir-tree, but no load/save
         # Move the tail forward, but don't change the end.
-        pass
+        '''while self.tail > 1:
+            self.tail -= 1
+            cmd_name = self.get_command_name()
+            if cmd_name == 'Load' or cmd_name == 'Save':
+                break
+            if (cmd_name == 'Show' or cmd_name == 'DirShow' or
+                    cmd_name == 'TreeShow'):
+                continue'''
 
-    # TODO(A): Redo the last command, just call command.excute() again
+        if self.tail > 0:
+            self.tail -= 1
+            self.queue[self.tail].undo()
+        else:
+            print('Nothing to undo')
+
+    # TODO(A): Redo the last command, just call command.excute() again #########
     def redo(self):
         # Notice: we can redo only if tail < end.
-        pass
+        if not self.tail < self.end:
+            print('Nothing to redo')
+        '''while True:
+            self.tail += 1
+            cmd_name = self.get_command_name()
+            if cmd_name == 'Load' or cmd_name == 'Save':
+                break
+            if (cmd_name == 'Show' or cmd_name == 'DirShow'
+                    or cmd_name == 'TreeShow'):
+                continue'''
+
+        self.queue[self.tail].excute()
+        self.tail += 1
+

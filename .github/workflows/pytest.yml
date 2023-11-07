@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '*'
-    pull request:
+    pull_request:
       branches:
         - main
 
@@ -28,4 +28,4 @@ jobs:
     - name: Run pytest
       run: |
         pip install pytest
-        python -m pytest test.py
+        python -m pytest test.py -v
