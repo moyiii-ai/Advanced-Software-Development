@@ -98,7 +98,9 @@ python版本：Python 3.9.6
 
 由于此前只能同时打开一个文件，我们对LineList使用了Singleton模式，所以现在只需取消Singleton限制，再为command指明操作的是哪个workspace即可，实际上这是同时存在多个workspace时所必需的。
 
-可以在command中增加一个switch函数，用于切换到指定workspace；再将load指令的执行逻辑由现在的清空当前workspace并载入文件，改为新建workspace。
+我们将新建和切换workspace的逻辑放在Adapter中，处理load指令时新建workspace，switch函数用于将当前执行的指令切换到指定已存在的workspace。为此，Adapter需要增加一个列表，维护打开的workspace和它们的操作状态。
+
+这样，Adapter处理后传递给CommandQueue的指令执行逻辑和原设计相同；CommandQueue模块仍然和LineList一一对应，以确保undo redo的正确性。
 
 ### 3.3 实现细节
 
